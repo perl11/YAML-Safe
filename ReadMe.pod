@@ -8,14 +8,14 @@ See http://github.com/ingydotnet/swim-pm#readme
 
 =head1 Name
 
-YAML::XS - Perl YAML Serialization using XS and libyaml
+YAML::Safe - Perl YAML Serialization using XS and libyaml
 
 =for html
 <a href="https://travis-ci.org/ingydotnet/yaml-libyaml-pm"><img src="https://travis-ci.org/ingydotnet/yaml-libyaml-pm.png" alt="yaml-libyaml-pm"></a>
 
 =head1 Synopsis
 
-    use YAML::XS;
+    use YAML::Safe;
 
     my $yaml = Dump [ 1..4 ];
     my $array = Load $yaml;
@@ -23,13 +23,13 @@ YAML::XS - Perl YAML Serialization using XS and libyaml
     my $yaml = DumpFile ("my.yml", [ 1..4 ]);
     my $array = LoadFile "my.yml";
 
-    my $yaml = new YAML::XS;
+    my $yaml = new YAML::Safe;
     $yaml->NonStrict(1);
     $yaml->Encoding("any");
     $yaml->SafeClass("DateTime");
     my $array = $yaml->SafeLoadFile("META.yml");
 
-    my $yaml = new YAML::XS;
+    my $yaml = new YAML::Safe;
     $yaml->Canonical(1);
     $yaml->Unicode(1);
     $yaml->SafeClass("DateTime");
@@ -54,41 +54,41 @@ There are also new Safe variants of Load and Dump methods, and the
 possibility to create a YAML object, set options as setter methods and call
 the Safe methods.
 
-If you set the option C<$YAML::XS::IndentlessMap> to 0 or undef, C<YAML::XS>
+If you set the option C<$YAML::Safe::IndentlessMap> to 0 or undef, C<YAML::Safe>
 will behave like with version E<lt> 0.70, which creates yml files which cannot
 be read by C<YAML.pm>
 
 However the loader is stricter than C<YAML>, C<YAML::Syck> and
 C<CPAN::Meta::YAML> i.e. C<YAML::Tiny> as used in core. Set the variable
-C<$YAML::XS::NonStrict> to allow certain reader errors to pass the
+C<$YAML::Safe::NonStrict> to allow certain reader errors to pass the
 C<CPAN::Meta> validation testsuite.
 
 =head1 CLASSES
 
--- YAML::XS
+-- YAML::Safe
 
 The exported name of the class for the old functions. No methods, only set
 options via globals.
 
--- YAML::XS::LibYAML
+-- YAML::Safe::LibYAML
 
 The internal name of the class for the old functions. No methods, only set
 options via globals.
 
--- YAML::XS::Loader
+-- YAML::Safe::Loader
 
 The new loader objectinterface, which has methods for options and loaders.
 
--- YAML::XS::Dumper
+-- YAML::Safe::Dumper
 
 The new dumper object interface, which has methods for options and dumpers.
 
--- YAML::XS::SafeLoader
+-- YAML::Safe::SafeLoader
 
 The new loader and restricted object interface, which has methods for options
 and the safe loaders.
 
--- YAML::XS::SafeDumper
+-- YAML::Safe::SafeDumper
 
 The new dumper and restricted object interface, which has methods for options
 and the safe dumpers.
@@ -135,7 +135,7 @@ and all the loader and dumper options as getter and setter methods.
 
 via globals variables or as optional getter and setter methods.
 
--- C<$YAML::XS::NonStrict>
+-- C<$YAML::Safe::NonStrict>
 
 Permit certain reader errors to loosely match other YAML module semantics. In
 detail: Allow B<"control characters are not allowed"`. Note that any error is
@@ -148,7 +148,7 @@ And if the structure of the YAML document cannot be parsed, i.e. a required
 value consists only of invalid control characters, the loader returns an
 error, unlike with non-strict YAML modules.
 
--- C<$YAML::XS::LoadCode>
+-- C<$YAML::Safe::LoadCode>
 
 Ignored. If enabled supports deparsing and evaling of code blocks.
 
@@ -156,15 +156,15 @@ Ignored. If enabled supports deparsing and evaling of code blocks.
 
 via globals variables or as optional getter and setter methods.
 
--- C<$YAML::XS::UseCode>
+-- C<$YAML::Safe::UseCode>
 
-If enabled supports Dump of CV code blocks via C<YAML::XS::coderef2text()>.
+If enabled supports Dump of CV code blocks via C<YAML::Safe::coderef2text()>.
 
--- C<$YAML::XS::DumpCode>
+-- C<$YAML::Safe::DumpCode>
 
-If enabled supports Dump of CV code blocks via C<YAML::XS::coderef2text()>.
+If enabled supports Dump of CV code blocks via C<YAML::Safe::coderef2text()>.
 
--- C<$YAML::XS::QuoteNumericStrings>
+-- C<$YAML::Safe::QuoteNumericStrings>
 
 When true (the default) strings that look like numbers but have not been
 numified will be quoted when dumping.
@@ -172,11 +172,11 @@ numified will be quoted when dumping.
 This ensures leading that things like leading zeros and other formatting are
 preserved.
 
--- C<$YAML::XS::IndentlessMap>
+-- C<$YAML::Safe::IndentlessMap>
 
 Default 0
 
-Set to 1 or a true value to fallback to the old C<YAML::XS> behavior to omit
+Set to 1 or a true value to fallback to the old C<YAML::Safe> behavior to omit
 the indentation of map keys, which arguably violates the YAML spec, is
 different to all other YAML libraries and causes C<YAML.pm> to fail.
 
@@ -190,57 +190,57 @@ With 1
      authors:
      - this author
 
--- C<$YAML::XS::Indent>
+-- C<$YAML::Safe::Indent>
 
 Default 2
 
--- C<$YAML::XS::BestWidth>
+-- C<$YAML::Safe::BestWidth>
 
 Default 80
 
 Control text wrapping.
 
--- C<$YAML::XS::Canonical>
+-- C<$YAML::Safe::Canonical>
 
 Default 1
 
 Set to undef or 0 to disable sorting map keys.
 
--- C<$YAML::XS::Unicode>
+-- C<$YAML::Safe::Unicode>
 
 Default 1
 
 Set to undef or 0 to disallow unescaped non-ASCII characters.
 
--- C<$YAML::XS::Encoding>
+-- C<$YAML::Safe::Encoding>
 
 Default utf8
 
 Set to any, utf8, utf16le or utf16be
 
--- C<$YAML::XS::LineBreak>
+-- C<$YAML::Safe::LineBreak>
 
 Default ln
 
 Set to any, cr, ln or crln.
 
--- C<$YAML::XS::OpenEnded>
+-- C<$YAML::Safe::OpenEnded>
 
 Default 0
 
 Set to 1 or a true value to embed the yaml into "...". If an explicit document
 end is required.
 
--- C<$YAML::XS::SafeMode>
+-- C<$YAML::Safe::SafeMode>
 
 Default 0
 
 Set to 1 or a true value to restrict the allowed classed only the set of
 registered classes or tags starting with "perl/".
 
-=head1 Using YAML::XS with Unicode
+=head1 Using YAML::Safe with Unicode
 
-Handling unicode properly in Perl can be a pain. YAML::XS only deals with
+Handling unicode properly in Perl can be a pain. YAML::Safe only deals with
 streams of utf8 octets. Just remember this:
 
     $perl = Load($utf8_octets);
@@ -265,11 +265,12 @@ having problems, use Devel::Peek on all the possible data points.
 
 =head1 Author
 
-Ingy döt Net <ingy@cpan.org>
+Reini Urban <rurban@cpan.org>
 
 =head1 Copyright and License
 
 Copyright 2007-2016. Ingy döt Net.
+Copyright 2016-2017. Reini Urban
 
 This program is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
